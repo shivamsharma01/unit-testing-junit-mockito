@@ -1,11 +1,13 @@
 package com.in28minutes.unittesting.unittesting.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.atLeastOnce;
@@ -84,4 +86,47 @@ public class ListMockTest {
 			assertEquals("SomeString1", allValues.get(0));
 			assertEquals("SomeString2", allValues.get(1));
 		}
+
+		// mock does not retain any behavior
+		@Test
+		public void checkMock() {
+			ArrayList listMock = mock(ArrayList.class);
+			// returns null instead of exception
+			System.out.println(listMock.get(0));
+			
+			listMock.add("Test");
+			// still null
+			System.out.println(listMock.get(0));
+			
+			// 0 instead of 1
+			System.out.println(listMock.size());
+			
+			when(listMock.size()).thenReturn(5);
+			// now returns 5
+			System.out.println(listMock.size());
+		}
+		
+		// spy uses the original class and only changes behaviors of those mentioned ex using when
+		@Test
+		public void checkSpy() {
+			ArrayList listSpy = spy(ArrayList.class);
+			// exception
+			try {
+				System.out.println(listSpy.get(0));
+			} catch (Exception e) {
+				System.out.println(e);
+			}
+			
+			listSpy.add("Test");
+			// Test
+			System.out.println(listSpy.get(0));
+			
+			//  1
+			System.out.println(listSpy.size());
+			
+			when(listSpy.size()).thenReturn(5);
+			// now returns 5
+			System.out.println(listSpy.size());
+		}
+		
 }
