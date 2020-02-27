@@ -14,6 +14,7 @@ import static org.mockito.Mockito.never;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 
 public class ListMockTest {
 	List<String> mock = mock(List.class);
@@ -61,4 +62,26 @@ public class ListMockTest {
 		verify(mock, never()).get(2);
 	}
 
+	// check value passed to internal method by the class we are testing
+		@Test
+		public void argumentCapturing() {
+			mock.add("SomeString");
+			
+			ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+			verify(mock).add(captor.capture());
+			assertEquals("SomeString", captor.getValue());
+		}
+		
+		// check multiple values passed to internal method by the class we are testing
+		@Test
+		public void multipleArgumentCapturing() {
+			mock.add("SomeString1");
+			mock.add("SomeString2");
+			
+			ArgumentCaptor<String> captor = ArgumentCaptor.forClass(String.class);
+			verify(mock, times(2)).add(captor.capture());
+			List<String> allValues = captor.getAllValues();
+			assertEquals("SomeString1", allValues.get(0));
+			assertEquals("SomeString2", allValues.get(1));
+		}
 }
