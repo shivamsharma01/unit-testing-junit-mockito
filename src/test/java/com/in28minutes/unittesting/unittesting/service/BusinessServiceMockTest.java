@@ -1,24 +1,27 @@
 package com.in28minutes.unittesting.unittesting.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.platform.runner.JUnitPlatform;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.in28minutes.unittesting.unittesting.data.SomeDataService;
 
+@ExtendWith(MockitoExtension.class)
+@RunWith(JUnitPlatform.class)
 public class BusinessServiceMockTest {
-	
+	@InjectMocks
 	BusinessServiceImpl impl = new BusinessServiceImpl();
-	SomeDataService dataService = mock(SomeDataService.class);
-	
-	@BeforeEach
-	public void before() {
-		impl.setSomeDataService(dataService);
-	}
-	
+
+	@Mock
+	SomeDataService dataService;
+
 	@Test
 	public void calculateSumUsingDataService_Basic() {
 		when(dataService.retrieveAllData()).thenReturn(new int[] { 1, 2, 3 });
